@@ -67,7 +67,7 @@ class PSOOptimizer:
         Y_train: target of the train set
 
         This is the fitness function used by the PSO, which is to be implemented (completed ) 
-        by the strudents. The objective is understanding the concept of how PSO is applied in 
+        by the students. The objective is understanding the concept of how PSO is applied in 
         this use case, namely optimizing a NN.
 
         Note that in each iteration of the PSO algorithm, a set of solutions are generated, 
@@ -76,7 +76,7 @@ class PSOOptimizer:
         position), X is a two-dimensional array.
 
         Note that each solution is used to setup the weights and biases of the network. 
-        Therefor, what you shuld do here is performing the forward propagation each time
+        Therefor, what you should do here is performing the forward propagation each time
         using the solution and random batches of training data to return the resulting accuracies 
         in a one-dimensional list.
 
@@ -86,8 +86,21 @@ class PSOOptimizer:
         Note that the current implementation of the function is random, which will run
         but it will result in low accuracy ~ 1/n_classes.
         """
-        # TODO: complete the implementation of this function
-        return np.array([1 * X.shape[0]])
+        
+        
+        # predict for each solution in X and return the accuracy
+        # each row in X is a solution / weights of the NN
+        acc = []
+        for x in X:
+            batch_X, batch_y = self.random_batch(X_train, y_train)
+            pred = self.nn.predict(x, batch_X)
+            accuracy = (pred == batch_y).mean()
+            acc.append(accuracy)
+        
+        
+        return acc
+        #return [-self.nn.forward_prop(x, X_train, y_train) for x in X]
+        #return np.array([1 * X.shape[0]])
 
     def random_batch(self, X_train, y_train):
         indices = np.random.choice(len(X_train), size=self.batchsize, replace=False)
