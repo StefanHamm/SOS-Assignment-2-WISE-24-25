@@ -87,20 +87,16 @@ class PSOOptimizer:
         but it will result in low accuracy ~ 1/n_classes.
         """
         
-        
-        # predict for each solution in X and return the accuracy
-        # each row in X is a solution / weights of the NN
         acc = []
         for x in X:
             batch_X, batch_y = self.random_batch(X_train, y_train)
             pred = self.nn.predict(x, batch_X)
             accuracy = (pred == batch_y).mean()
-            acc.append(accuracy)
-        
+            acc.append(1/accuracy)
         
         return acc
-        #return [-self.nn.forward_prop(x, X_train, y_train) for x in X]
-        #return np.array([1 * X.shape[0]])
+        #return [self.nn.forward_prop(x, X_train, y_train) for x in X]
+
 
     def random_batch(self, X_train, y_train):
         indices = np.random.choice(len(X_train), size=self.batchsize, replace=False)
@@ -123,12 +119,14 @@ def main():
     ####### PSO  Tuning ################
     # Tune the PSO parameters here trying to outperform the classic NN 
     # For more about these parameters, see the lecture resources
-    par_C1 = 0.1
-    par_C2 = 0.1
-    par_W = 0.1
+    # par_C1 = 0.1
+    # par_C2 = 0.1
+    # par_W = 0.1
+    par_C1 = 2.0
+    par_C2 = 2.0
+    par_W = 0.7
     par_SwarmSize = 100
     batchsize = 200 # The number of data instances used by the fitness function
-
     print ("############ you are using the following settings:")
     print ("Number hidden layers: ", n_hidden)
     print ("activation: ", activation[0])
