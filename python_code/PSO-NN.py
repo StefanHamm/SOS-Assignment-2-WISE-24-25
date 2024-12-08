@@ -4,6 +4,7 @@ from commonsetup import n_hidden, X_train, X_test, y_train, y_test, n_inputs, n_
 
 class NeuralNetwork:
     def __init__(self, n_inputs, n_hidden, n_classes, activation):
+        np.random.seed(42)
         self.n_inputs = n_inputs
         self.n_hidden = n_hidden
         self.n_classes = n_classes
@@ -104,12 +105,12 @@ class PSOOptimizer:
         y_batch = y_train[indices]
         return (X_batch, y_batch)
     
-    def optimize(self, X_train, y_train):
+    def optimize(self, X_train, y_train,verbose=False):
         """Perform the PSO optimization."""
         dimensions = self.nn.count_param()
         optimizer = ps.single.GlobalBestPSO(n_particles=self.swarm_size, dimensions=dimensions,
                                             options={'c1': self.c1, 'c2': self.c2, 'w': self.w})
-        cost, weights = optimizer.optimize(self.fitness_function, iters=self.n_iterations, verbose=False,
+        cost, weights = optimizer.optimize(self.fitness_function, iters=self.n_iterations, verbose=verbose,
                                        X_train=X_train, y_train=y_train)
         return weights
 
@@ -146,6 +147,8 @@ def main():
     y_pred = nn.predict(weights, X_test)
     accuracy = (y_pred == y_test).mean()
     print(f"Accuracy PSO-NN: {accuracy:.2f}")
+    
+    
 
 
 if __name__ == "__main__":

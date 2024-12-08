@@ -10,6 +10,7 @@ class NeuralNetwork:
         self.activation_derivative = activation_derivative
         
         # Initialize weights and biases
+        np.random.seed(42)
         self.W1 = np.random.randn(self.n_inputs, self.n_hidden) * 0.01
         self.b1 = np.zeros((1, self.n_hidden))
         self.W2 = np.random.randn(self.n_hidden, self.n_classes) * 0.01
@@ -42,14 +43,15 @@ class NeuralNetwork:
         self.W1 -= learning_rate * dW1
         self.b1 -= learning_rate * db1
 
-    def train(self, X_train, y_train, epochs, learning_rate):
+    def train(self, X_train, y_train, epochs, learning_rate,verbose=True):
         """Train the neural network."""
         for epoch in range(epochs):
             self.forward(X_train)  # Forward pass
             self.backward(X_train, y_train, learning_rate)  # Backward pass
             if epoch % 100 == 0:
                 loss = self.compute_loss(y_train)
-                print(f'Epoch {epoch}, Loss: {loss:.4f}')
+                if verbose:
+                    print(f'Epoch {epoch}, Loss: {loss:.4f}')
 
     def predict(self, X):
         """Predict the classes based on trained weights."""
