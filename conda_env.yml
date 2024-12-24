@@ -1,0 +1,17 @@
+name: sos_pso
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - pandas
+  - scikit-learn
+  - pytorch
+  - seaborn
+  - nltk
+  - requests
+  - beautifulsoup4
+  - jupyter  # Added for running notebooks
+  - pip:
+      - transformers==4.2.0
+      - synergy_dataset
+      - pyswarms
