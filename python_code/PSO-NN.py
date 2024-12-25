@@ -105,10 +105,15 @@ class PSOOptimizer:
         y_batch = y_train[indices]
         return (X_batch, y_batch)
     
-    def optimize(self, X_train, y_train,verbose=False):
+    def optimize(self, X_train, y_train,v_clamp=None,verbose=False):
         """Perform the PSO optimization."""
         dimensions = self.nn.count_param()
-        optimizer = ps.single.GlobalBestPSO(n_particles=self.swarm_size, dimensions=dimensions,
+        optimizer = None
+        if v_clamp:
+            optimizer = ps.single.GlobalBestPSO(n_particles=self.swarm_size, dimensions=dimensions,
+                                            options={'c1': self.c1, 'c2': self.c2, 'w': self.w},velocity_clamp=v_clamp)
+        else:
+            optimizer = ps.single.GlobalBestPSO(n_particles=self.swarm_size, dimensions=dimensions,
                                             options={'c1': self.c1, 'c2': self.c2, 'w': self.w})
         cost, weights = optimizer.optimize(self.fitness_function, iters=self.n_iterations, verbose=verbose,
                                        X_train=X_train, y_train=y_train)
